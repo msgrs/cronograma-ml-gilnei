@@ -4,7 +4,279 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cronograma de Implementação - Mercado Livre</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f3f4f6;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        h1 {
+            color: #1f2937;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .instructions {
+            background-color: #dbeafe;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .instructions h3 {
+            color: #1e40af;
+            margin-bottom: 10px;
+        }
+
+        .instructions p {
+            color: #1e3a8a;
+            font-size: 0.95em;
+        }
+
+        .gantt-header {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 10px;
+        }
+
+        .gantt-label {
+            width: 300px;
+            font-weight: bold;
+            color: #374151;
+            font-size: 1.1em;
+        }
+
+        .gantt-weeks {
+            flex: 1;
+            display: flex;
+        }
+
+        .week {
+            flex: 1;
+            text-align: center;
+            font-size: 0.85em;
+            color: #6b7280;
+            font-weight: 600;
+            border-left: 1px solid #e5e7eb;
+            padding: 5px 0;
+        }
+
+        .phase {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            background-color: white;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .phase:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .phase-header {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .phase-info {
+            width: 300px;
+            padding-right: 20px;
+        }
+
+        .phase-name {
+            font-weight: bold;
+            color: #1f2937;
+            font-size: 0.95em;
+            margin-bottom: 5px;
+        }
+
+        .phase-duration {
+            font-size: 0.85em;
+            color: #6b7280;
+        }
+
+        .phase-chart {
+            flex: 1;
+            position: relative;
+            height: 40px;
+        }
+
+        .phase-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+        }
+
+        .grid-cell {
+            flex: 1;
+            border-left: 1px solid #e5e7eb;
+        }
+
+        .phase-bar {
+            position: absolute;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8em;
+            font-weight: 600;
+            opacity: 0.85;
+            transition: opacity 0.3s ease;
+        }
+
+        .phase-bar:hover {
+            opacity: 1;
+        }
+
+        .color-blue { background-color: #3b82f6; }
+        .color-green { background-color: #10b981; }
+        .color-purple { background-color: #8b5cf6; }
+        .color-orange { background-color: #f97316; }
+        .color-red { background-color: #ef4444; }
+        .color-indigo { background-color: #6366f1; }
+        .color-teal { background-color: #14b8a6; }
+
+        .phase-tasks {
+            padding: 20px;
+            background-color: #f9fafb;
+            border-top: 1px solid #e5e7eb;
+            display: none;
+        }
+
+        .phase-tasks.active {
+            display: block;
+        }
+
+        .phase-tasks h4 {
+            color: #374151;
+            margin-bottom: 15px;
+            font-size: 0.95em;
+        }
+
+        .task-list {
+            list-style: none;
+        }
+
+        .task-item {
+            color: #4b5563;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .task-check {
+            color: #10b981;
+            margin-right: 10px;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .milestones {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            border-radius: 8px;
+        }
+
+        .milestones h3 {
+            color: #92400e;
+            margin-bottom: 15px;
+        }
+
+        .milestone-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .milestone-item {
+            font-size: 0.9em;
+        }
+
+        .milestone-week {
+            font-weight: bold;
+            color: #78350f;
+        }
+
+        .milestone-text {
+            color: #92400e;
+        }
+
+        .tips {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #d1fae5;
+            border-radius: 8px;
+        }
+
+        .tips h3 {
+            color: #065f46;
+            margin-bottom: 15px;
+        }
+
+        .tips ul {
+            list-style: none;
+        }
+
+        .tips li {
+            color: #047857;
+            font-size: 0.9em;
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .gantt-label,
+            .phase-info {
+                width: 200px;
+            }
+            
+            h1 {
+                font-size: 1.5em;
+            }
+            
+            .week {
+                font-size: 0.7em;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -57,6 +329,178 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        function togglePhase(phaseId) {
+            var tasksDiv = document.getElementById('tasks-' + phaseId);
+            if (tasksDiv.classList.contains('active')) {
+                tasksDiv.classList.remove('active');
+            } else {
+                tasksDiv.classList.add('active');
+            }
+        }
+
+        var phases = [
+            {
+                id: 1,
+                name: "PREPARAÇÃO INICIAL",
+                duration: "Semana 1",
+                start: 0,
+                length: 1,
+                color: "color-blue",
+                tasks: [
+                    "Criar conta vendedor no Mercado Livre",
+                    "Vincular conta bancária e configurar recebimentos",
+                    "Estudar políticas e regras do Mercado Livre",
+                    "Analisar concorrência (preços, descrições, fotos)",
+                    "Definir estratégia de precificação"
+                ]
+            },
+            {
+                id: 2,
+                name: "ESTRUTURAÇÃO DE CADASTROS",
+                duration: "Semanas 2-3",
+                start: 1,
+                length: 2,
+                color: "color-green",
+                tasks: [
+                    "Fotografar todos os produtos (fundo branco, múltiplos ângulos)",
+                    "Criar descrições detalhadas e otimizadas para SEO",
+                    "Definir códigos SKU para controle de estoque",
+                    "Preparar tabela de medidas e especificações técnicas",
+                    "Criar templates de descrição padrão"
+                ]
+            },
+            {
+                id: 3,
+                name: "CADASTRO DE PRODUTOS",
+                duration: "Semana 3-4",
+                start: 2.5,
+                length: 1.5,
+                color: "color-purple",
+                tasks: [
+                    "Cadastrar primeiros 10-15 produtos principais",
+                    "Configurar variações (tamanhos, fragrâncias, etc)",
+                    "Definir estoque disponível para cada produto",
+                    "Configurar frete (Mercado Envios)",
+                    "Estabelecer preços e promoções iniciais"
+                ]
+            },
+            {
+                id: 4,
+                name: "LOGÍSTICA E OPERAÇÃO",
+                duration: "Semana 4",
+                start: 3.5,
+                length: 1,
+                color: "color-orange",
+                tasks: [
+                    "Organizar área de separação e embalagem",
+                    "Comprar materiais de embalagem (caixas, plástico bolha, fita)",
+                    "Criar processo de embalagem padronizado",
+                    "Testar envio com Mercado Envios",
+                    "Configurar integrações de estoque (se aplicável)"
+                ]
+            },
+            {
+                id: 5,
+                name: "LANÇAMENTO E OTIMIZAÇÃO",
+                duration: "Semana 5-6",
+                start: 4,
+                length: 2,
+                color: "color-red",
+                tasks: [
+                    "Ativar todos os anúncios simultaneamente",
+                    "Configurar anúncios patrocinados nos produtos principais",
+                    "Monitorar primeiras vendas e feedback",
+                    "Ajustar preços conforme performance",
+                    "Responder todas as perguntas em até 2 horas"
+                ]
+            },
+            {
+                id: 6,
+                name: "EXPANSÃO DO CATÁLOGO",
+                duration: "Semanas 6-8",
+                start: 5.5,
+                length: 2.5,
+                color: "color-indigo",
+                tasks: [
+                    "Cadastrar produtos complementares",
+                    "Criar kits e combos promocionais",
+                    "Adicionar produtos de maior margem",
+                    "Expandar variações dos produtos mais vendidos",
+                    "Testar novos nichos dentro de barbearia"
+                ]
+            },
+            {
+                id: 7,
+                name: "CONSOLIDAÇÃO E CRESCIMENTO",
+                duration: "Semanas 8-12",
+                start: 7.5,
+                length: 4.5,
+                color: "color-teal",
+                tasks: [
+                    "Alcançar reputação verde/laranja",
+                    "Implementar melhorias baseadas em feedback",
+                    "Avaliar possibilidade de Mercado Livre Full",
+                    "Expandir investimento em anúncios patrocinados",
+                    "Desenvolver relacionamento com clientes recorrentes"
+                ]
+            }
+        ];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var weeksHeader = document.getElementById('weeks-header');
+            for (var i = 1; i <= 12; i++) {
+                var week = document.createElement('div');
+                week.className = 'week';
+                week.textContent = 'S' + i;
+                weeksHeader.appendChild(week);
+            }
+
+            var phasesContainer = document.getElementById('phases-container');
+            
+            for (var p = 0; p < phases.length; p++) {
+                var phase = phases[p];
+                var phaseDiv = document.createElement('div');
+                phaseDiv.className = 'phase';
+                
+                var leftPosition = (phase.start / 12) * 100;
+                var width = (phase.length / 12) * 100;
+                
+                var gridCells = '';
+                for (var i = 0; i < 12; i++) {
+                    gridCells += '<div class="grid-cell"></div>';
+                }
+                
+                var tasksList = '';
+                for (var t = 0; t < phase.tasks.length; t++) {
+                    tasksList += '<li class="task-item">';
+                    tasksList += '<span class="task-check">✓</span>';
+                    tasksList += '<span>' + phase.tasks[t] + '</span>';
+                    tasksList += '</li>';
+                }
+                
+                var phaseHTML = '';
+                phaseHTML += '<div class="phase-header" onclick="togglePhase(' + phase.id + ')">';
+                phaseHTML += '<div class="phase-info">';
+                phaseHTML += '<div class="phase-name">' + phase.name + '</div>';
+                phaseHTML += '<div class="phase-duration">' + phase.duration + '</div>';
+                phaseHTML += '</div>';
+                phaseHTML += '<div class="phase-chart">';
+                phaseHTML += '<div class="phase-grid">' + gridCells + '</div>';
+                phaseHTML += '<div class="phase-bar ' + phase.color + '" style="left: ' + leftPosition + '%; width: ' + width + '%;">';
+                phaseHTML += phase.duration;
+                phaseHTML += '</div>';
+                phaseHTML += '</div>';
+                phaseHTML += '</div>';
+                phaseHTML += '<div class="phase-tasks" id="tasks-' + phase.id + '">';
+                phaseHTML += '<h4>Tarefas:</h4>';
+                phaseHTML += '<ul class="task-list">' + tasksList + '</ul>';
+                phaseHTML += '</div>';
+                
+                phaseDiv.innerHTML = phaseHTML;
+                phasesContainer.appendChild(phaseDiv);
+            }
+        });
+    </script>
 </body>
 </html>
