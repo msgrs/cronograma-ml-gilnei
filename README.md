@@ -12,7 +12,7 @@ O projeto apresenta um gráfico de Gantt interativo com 7 fases principais, cada
 
 Acesse o cronograma online: [https://cronograma-ml-gilnei.centersul.net.br](https://cronograma-ml-gilnei.centersul.net.br)
 
-*(Ou pelo GitHub Pages: https://SEU_USUARIO.github.io/cronograma-ml-gilnei/)*
+*(Ou pelo GitHub Pages: https://msgrs.github.io/cronograma-ml-gilnei/)*
 
 ## 📁 Estrutura do Projeto
 ```
