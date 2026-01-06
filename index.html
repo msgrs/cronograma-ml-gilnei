@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cronograma de Implementação - Gilnei no Mercado Livre</title>
+    <title>Cronograma de Implementação - Mercado Livre</title>
     <style>
         * {
             margin: 0;
@@ -17,7 +17,7 @@
             padding: 20px;
             line-height: 1.6;
         }
- 
+
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -35,8 +35,91 @@
 
         .subtitle {
             color: #6b7280;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             font-size: 1.1em;
+        }
+
+        .progress-summary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .progress-item {
+            text-align: center;
+        }
+
+        .progress-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            display: block;
+        }
+
+        .progress-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 30px;
+            background-color: rgba(255,255,255,0.3);
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: #10b981;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.9em;
+        }
+
+        .btn-reset {
+            background-color: #ef4444;
+            color: white;
+        }
+
+        .btn-reset:hover {
+            background-color: #dc2626;
+        }
+
+        .btn-export {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        .btn-export:hover {
+            background-color: #2563eb;
         }
 
         .instructions {
@@ -90,7 +173,12 @@
             border-radius: 8px;
             margin-bottom: 15px;
             background-color: white;
-            transition: box-shadow 0.3s ease;
+            transition: all 0.3s ease;
+        }
+
+        .phase.completed {
+            border-color: #10b981;
+            background-color: #f0fdf4;
         }
 
         .phase:hover {
@@ -115,11 +203,25 @@
             color: #1f2937;
             font-size: 0.95em;
             margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .phase-check {
+            font-size: 1.3em;
         }
 
         .phase-duration {
             font-size: 0.85em;
             color: #6b7280;
+        }
+
+        .phase-completion {
+            font-size: 0.75em;
+            color: #10b981;
+            font-weight: 600;
+            margin-top: 3px;
         }
 
         .phase-chart {
@@ -190,18 +292,77 @@
         }
 
         .task-item {
-            color: #4b5563;
-            font-size: 0.9em;
-            margin-bottom: 10px;
             display: flex;
             align-items: flex-start;
+            padding: 12px;
+            margin-bottom: 8px;
+            background-color: white;
+            border-radius: 6px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s;
+            cursor: pointer;
         }
 
-        .task-check {
-            color: #10b981;
-            margin-right: 10px;
+        .task-item:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .task-item.completed {
+            background-color: #f0fdf4;
+            border-color: #10b981;
+        }
+
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #d1d5db;
+            border-radius: 4px;
+            margin-right: 12px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .task-item.completed .task-checkbox {
+            background-color: #10b981;
+            border-color: #10b981;
+        }
+
+        .task-checkbox::after {
+            content: '✓';
+            color: white;
             font-weight: bold;
-            font-size: 1.2em;
+            display: none;
+        }
+
+        .task-item.completed .task-checkbox::after {
+            display: block;
+        }
+
+        .task-content {
+            flex: 1;
+        }
+
+        .task-text {
+            color: #4b5563;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .task-item.completed .task-text {
+            color: #6b7280;
+            text-decoration: line-through;
+        }
+
+        .task-date {
+            font-size: 0.75em;
+            color: #10b981;
+            margin-top: 4px;
+            font-weight: 600;
         }
 
         .milestones {
@@ -275,6 +436,10 @@
             .week {
                 font-size: 0.7em;
             }
+
+            .progress-summary {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -283,9 +448,32 @@
         <h1>Cronograma de Implementação - Mercado Livre</h1>
         <p class="subtitle">Plano de 12 semanas para iniciar vendas de produtos de barbearia</p>
 
+        <div class="progress-summary">
+            <div class="progress-item">
+                <span class="progress-number" id="completed-tasks">0</span>
+                <span class="progress-label">Tarefas Concluídas</span>
+            </div>
+            <div class="progress-item">
+                <span class="progress-number" id="total-tasks">35</span>
+                <span class="progress-label">Total de Tarefas</span>
+            </div>
+            <div class="progress-item">
+                <span class="progress-number" id="completed-phases">0</span>
+                <span class="progress-label">Fases Completas</span>
+            </div>
+            <div class="progress-bar-container" style="width: 100%; max-width: 400px;">
+                <div class="progress-bar" id="progress-bar">0%</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-export" onclick="exportProgress()">📊 Exportar Progresso</button>
+            <button class="btn btn-reset" onclick="resetProgress()">🔄 Resetar Tudo</button>
+        </div>
+
         <div class="instructions">
             <h3>📋 Instruções:</h3>
-            <p>Clique em cada fase para ver as tarefas detalhadas. As barras coloridas representam a duração de cada etapa.</p>
+            <p>Clique em cada fase para ver as tarefas. Clique nas tarefas para marcá-las como concluídas. Seu progresso é salvo automaticamente!</p>
         </div>
 
         <div class="gantt-header">
@@ -330,15 +518,6 @@
     </div>
 
     <script>
-        function togglePhase(phaseId) {
-            var tasksDiv = document.getElementById('tasks-' + phaseId);
-            if (tasksDiv.classList.contains('active')) {
-                tasksDiv.classList.remove('active');
-            } else {
-                tasksDiv.classList.add('active');
-            }
-        }
-
         var phases = [
             {
                 id: 1,
@@ -447,22 +626,129 @@
             }
         ];
 
-        document.addEventListener('DOMContentLoaded', function() {
-            var weeksHeader = document.getElementById('weeks-header');
-            for (var i = 1; i <= 12; i++) {
-                var week = document.createElement('div');
-                week.className = 'week';
-                week.textContent = 'S' + i;
-                weeksHeader.appendChild(week);
-            }
+        var completedTasks = {};
 
+        function loadProgress() {
+            var saved = localStorage.getItem('cronogramaML');
+            if (saved) {
+                completedTasks = JSON.parse(saved);
+            }
+        }
+
+        function saveProgress() {
+            localStorage.setItem('cronogramaML', JSON.stringify(completedTasks));
+            updateProgress();
+        }
+
+        function toggleTask(phaseId, taskIndex) {
+            var key = phaseId + '-' + taskIndex;
+            if (completedTasks[key]) {
+                delete completedTasks[key];
+            } else {
+                completedTasks[key] = new Date().toLocaleDateString('pt-BR');
+            }
+            saveProgress();
+            renderPhases();
+        }
+
+        function updateProgress() {
+            var total = 0;
+            var completed = 0;
+            var completedPhases = 0;
+
+            phases.forEach(function(phase) {
+                var phaseCompleted = 0;
+                phase.tasks.forEach(function(task, idx) {
+                    total++;
+                    var key = phase.id + '-' + idx;
+                    if (completedTasks[key]) {
+                        completed++;
+                        phaseCompleted++;
+                    }
+                });
+                if (phaseCompleted === phase.tasks.length) {
+                    completedPhases++;
+                }
+            });
+
+            var percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+            document.getElementById('completed-tasks').textContent = completed;
+            document.getElementById('total-tasks').textContent = total;
+            document.getElementById('completed-phases').textContent = completedPhases;
+            document.getElementById('progress-bar').style.width = percentage + '%';
+            document.getElementById('progress-bar').textContent = percentage + '%';
+        }
+
+        function togglePhase(phaseId) {
+            var tasksDiv = document.getElementById('tasks-' + phaseId);
+            if (tasksDiv.classList.contains('active')) {
+                tasksDiv.classList.remove('active');
+            } else {
+                tasksDiv.classList.add('active');
+            }
+        }
+
+        function exportProgress() {
+            var report = 'CRONOGRAMA MERCADO LIVRE - RELATÓRIO DE PROGRESSO\n';
+            report += 'Data: ' + new Date().toLocaleDateString('pt-BR') + '\n\n';
+
+            phases.forEach(function(phase) {
+                var phaseCompleted = 0;
+                phase.tasks.forEach(function(task, idx) {
+                    var key = phase.id + '-' + idx;
+                    if (completedTasks[key]) {
+                        phaseCompleted++;
+                    }
+                });
+                
+                report += phase.name + ' (' + phase.duration + ')\n';
+                report += 'Progresso: ' + phaseCompleted + '/' + phase.tasks.length + ' tarefas\n\n';
+                
+                phase.tasks.forEach(function(task, idx) {
+                    var key = phase.id + '-' + idx;
+                    var status = completedTasks[key] ? '[✓] Concluída em ' + completedTasks[key] : '[ ] Pendente';
+                    report += '  ' + status + ' - ' + task + '\n';
+                });
+                report += '\n';
+            });
+
+            var blob = new Blob([report], { type: 'text/plain' });
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'cronograma-ml-progresso.txt';
+            a.click();
+        }
+
+        function resetProgress() {
+            if (confirm('Tem certeza que deseja resetar todo o progresso? Esta ação não pode ser desfeita.')) {
+                completedTasks = {};
+                saveProgress();
+                renderPhases();
+            }
+        }
+
+        function renderPhases() {
             var phasesContainer = document.getElementById('phases-container');
-            
-            for (var p = 0; p < phases.length; p++) {
-                var phase = phases[p];
+            phasesContainer.innerHTML = '';
+
+            phases.forEach(function(phase) {
                 var phaseDiv = document.createElement('div');
                 phaseDiv.className = 'phase';
                 
+                var phaseCompleted = 0;
+                phase.tasks.forEach(function(task, idx) {
+                    var key = phase.id + '-' + idx;
+                    if (completedTasks[key]) {
+                        phaseCompleted++;
+                    }
+                });
+
+                if (phaseCompleted === phase.tasks.length) {
+                    phaseDiv.classList.add('completed');
+                }
+
                 var leftPosition = (phase.start / 12) * 100;
                 var width = (phase.length / 12) * 100;
                 
@@ -470,20 +756,31 @@
                 for (var i = 0; i < 12; i++) {
                     gridCells += '<div class="grid-cell"></div>';
                 }
+
+                var checkIcon = phaseCompleted === phase.tasks.length ? '✓' : '';
+                var completionText = phaseCompleted > 0 ? '<div class="phase-completion">' + phaseCompleted + '/' + phase.tasks.length + ' concluídas</div>' : '';
                 
                 var tasksList = '';
-                for (var t = 0; t < phase.tasks.length; t++) {
-                    tasksList += '<li class="task-item">';
-                    tasksList += '<span class="task-check">✓</span>';
-                    tasksList += '<span>' + phase.tasks[t] + '</span>';
+                phase.tasks.forEach(function(task, idx) {
+                    var key = phase.id + '-' + idx;
+                    var isCompleted = completedTasks[key] ? 'completed' : '';
+                    var dateText = completedTasks[key] ? '<div class="task-date">✓ Concluída em ' + completedTasks[key] + '</div>' : '';
+                    
+                    tasksList += '<li class="task-item ' + isCompleted + '" onclick="toggleTask(' + phase.id + ', ' + idx + ')">';
+                    tasksList += '<div class="task-checkbox"></div>';
+                    tasksList += '<div class="task-content">';
+                    tasksList += '<div class="task-text">' + task + '</div>';
+                    tasksList += dateText;
+                    tasksList += '</div>';
                     tasksList += '</li>';
-                }
+                });
                 
                 var phaseHTML = '';
                 phaseHTML += '<div class="phase-header" onclick="togglePhase(' + phase.id + ')">';
                 phaseHTML += '<div class="phase-info">';
-                phaseHTML += '<div class="phase-name">' + phase.name + '</div>';
+                phaseHTML += '<div class="phase-name"><span class="phase-check">' + checkIcon + '</span>' + phase.name + '</div>';
                 phaseHTML += '<div class="phase-duration">' + phase.duration + '</div>';
+                phaseHTML += completionText;
                 phaseHTML += '</div>';
                 phaseHTML += '<div class="phase-chart">';
                 phaseHTML += '<div class="phase-grid">' + gridCells + '</div>';
@@ -499,7 +796,22 @@
                 
                 phaseDiv.innerHTML = phaseHTML;
                 phasesContainer.appendChild(phaseDiv);
+            });
+
+            updateProgress();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var weeksHeader = document.getElementById('weeks-header');
+            for (var i = 1; i <= 12; i++) {
+                var week = document.createElement('div');
+                week.className = 'week';
+                week.textContent = 'S' + i;
+                weeksHeader.appendChild(week);
             }
+
+            loadProgress();
+            renderPhases();
         });
     </script>
 </body>
