@@ -1,13 +1,12 @@
-# 📊 Cronograma de Implementação - Mercado Livre
+# 📊 Cronograma de Implementação Interativa - Mercado Livre
 
 Plano estratégico de 12 semanas para implementação e início de vendas de produtos de barbearia no Mercado Livre.
 
 ## 🎯 Sobre o Projeto
 
 Este cronograma foi desenvolvido para auxiliar na estruturação completa de uma operação de vendas no Mercado Livre, desde a criação da conta até a consolidação do negócio.
-
 O projeto apresenta um gráfico de Gantt interativo com 7 fases principais, cada uma contendo tarefas específicas e marcos importantes.
-
+Para cada tarefa á executar, tem uma caixa para flegar , marcando como feita a tarefa e o sistema coloca a data de tickagem.
 ## 🚀 Demonstração
 
 Acesse o cronograma online: [https://cronograma-ml-gilnei.centersul.net.br](https://cronograma-ml-gilnei.centersul.net.br)
@@ -18,8 +17,6 @@ Acesse o cronograma online: [https://cronograma-ml-gilnei.centersul.net.br](http
 ```
 cronograma-ml-gilnei/
 ├── index.html      # Estrutura HTML da página
-├── style.css       # Estilos e layout
-├── script.js       # Funcionalidades e interatividade
 └── README.md       # Documentação do projeto
 ```
 
