@@ -1,258 +1,612 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cronograma Operação Mercado Livre + Bling</title>
-  <style>
-    :root{
-      --bg:#f4f7fb;
-      --card:#ffffff;
-      --text:#1f2937;
-      --muted:#6b7280;
-      --ok:#16a34a;
-      --doing:#d97706;
-      --next:#2563eb;
-      --border:#e5e7eb;
-      --shadow:0 10px 25px rgba(0,0,0,0.06);
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cronograma Estratégico – Vendas Online e Escala Operacional</title>
 
-    *{box-sizing:border-box}
+<style>
 
-    body{
-      margin:0;
-      font-family:Arial, Helvetica, sans-serif;
-      background:var(--bg);
-      color:var(--text);
-    }
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
 
-    .wrap{
-      max-width:1000px;
-      margin:0 auto;
-      padding:32px 20px 48px;
-    }
+body{
+font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+background:#f3f4f6;
+padding:20px;
+}
 
-    .hero{
-      background:linear-gradient(135deg, #0f172a, #1e3a8a);
-      color:#fff;
-      border-radius:18px;
-      padding:28px;
-      box-shadow:var(--shadow);
-      margin-bottom:24px;
-    }
+.container{
+max-width:1400px;
+margin:auto;
+background:white;
+border-radius:10px;
+box-shadow:0 4px 6px rgba(0,0,0,0.1);
+padding:30px;
+}
 
-    .hero h1{
-      margin:0 0 10px;
-      font-size:32px;
-    }
+h1{
+color:#1f2937;
+margin-bottom:10px;
+}
 
-    .hero p{
-      margin:0;
-      line-height:1.6;
-      color:#dbeafe;
-    }
+.subtitle{
+color:#6b7280;
+margin-bottom:20px;
+}
 
-    .status-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-      gap:14px;
-      margin:24px 0;
-    }
+.progress-summary{
+background:linear-gradient(135deg,#667eea,#764ba2);
+color:white;
+padding:20px;
+border-radius:10px;
+margin-bottom:30px;
+display:flex;
+justify-content:space-around;
+flex-wrap:wrap;
+}
 
-    .status-card{
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:14px;
-      padding:16px;
-      box-shadow:var(--shadow);
-    }
+.progress-number{
+font-size:2.5em;
+font-weight:bold;
+}
 
-    .status-card h3{
-      margin:0 0 8px;
-      font-size:16px;
-      color:var(--muted);
-    }
+.progress-bar-container{
+width:100%;
+height:25px;
+background:rgba(255,255,255,0.3);
+border-radius:15px;
+margin-top:10px;
+overflow:hidden;
+}
 
-    .status-card strong{
-      font-size:20px;
-    }
+.progress-bar{
+height:100%;
+background:#10b981;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:bold;
+}
 
-    .section-title{
-      margin:30px 0 14px;
-      font-size:24px;
-    }
+.controls{
+margin-bottom:20px;
+}
 
-    .timeline{
-      display:flex;
-      flex-direction:column;
-      gap:16px;
-    }
+.btn{
+padding:10px 18px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+font-weight:bold;
+margin-right:10px;
+}
 
-    .phase{
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:16px;
-      padding:20px;
-      box-shadow:var(--shadow);
-    }
+.btn-reset{background:#ef4444;color:white;}
+.btn-export{background:#3b82f6;color:white;}
 
-    .phase h2{
-      margin:0 0 12px;
-      font-size:20px;
-    }
+.instructions{
+background:#dbeafe;
+padding:20px;
+border-radius:8px;
+margin-bottom:30px;
+}
 
-    .badge{
-      display:inline-block;
-      padding:6px 10px;
-      border-radius:999px;
-      font-size:12px;
-      font-weight:bold;
-      margin-bottom:12px;
-    }
+.gantt-header{
+display:flex;
+border-bottom:2px solid #e5e7eb;
+margin-bottom:20px;
+padding-bottom:10px;
+}
 
-    .ok{background:#dcfce7;color:#166534;}
-    .doing{background:#fef3c7;color:#92400e;}
-    .next{background:#dbeafe;color:#1d4ed8;}
+.gantt-label{
+width:300px;
+font-weight:bold;
+}
 
-    ul{
-      margin:0;
-      padding-left:18px;
-      line-height:1.7;
-    }
+.gantt-weeks{
+flex:1;
+display:flex;
+}
 
-    .footer{
-      margin-top:32px;
-      text-align:center;
-      color:var(--muted);
-      font-size:14px;
-    }
+.week{
+flex:1;
+text-align:center;
+font-size:0.85em;
+border-left:1px solid #e5e7eb;
+}
 
-    .highlight{
-      background:#eff6ff;
-      border-left:4px solid #2563eb;
-      padding:14px 16px;
-      border-radius:10px;
-      margin-top:18px;
-      line-height:1.6;
-    }
+.phase{
+border:1px solid #e5e7eb;
+border-radius:8px;
+margin-bottom:15px;
+background:white;
+}
 
-    @media (max-width:640px){
-      .hero h1{font-size:26px}
-      .section-title{font-size:22px}
-    }
-  </style>
+.phase.completed{
+border-color:#10b981;
+background:#f0fdf4;
+}
+
+.phase-header{
+display:flex;
+align-items:center;
+padding:15px;
+cursor:pointer;
+}
+
+.phase-info{
+width:300px;
+}
+
+.phase-name{
+font-weight:bold;
+margin-bottom:5px;
+}
+
+.phase-chart{
+flex:1;
+position:relative;
+height:40px;
+}
+
+.phase-grid{
+position:absolute;
+top:0;
+left:0;
+right:0;
+bottom:0;
+display:flex;
+}
+
+.grid-cell{
+flex:1;
+border-left:1px solid #e5e7eb;
+}
+
+.phase-bar{
+position:absolute;
+height:30px;
+border-radius:6px;
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:0.8em;
+font-weight:bold;
+}
+
+.color-blue{background:#3b82f6;}
+.color-green{background:#10b981;}
+.color-purple{background:#8b5cf6;}
+.color-orange{background:#f97316;}
+.color-red{background:#ef4444;}
+.color-indigo{background:#6366f1;}
+.color-teal{background:#14b8a6;}
+
+.phase-tasks{
+display:none;
+padding:20px;
+background:#f9fafb;
+border-top:1px solid #e5e7eb;
+}
+
+.phase-tasks.active{
+display:block;
+}
+
+.task-item{
+display:flex;
+padding:10px;
+background:white;
+border:1px solid #e5e7eb;
+border-radius:6px;
+margin-bottom:8px;
+cursor:pointer;
+}
+
+.task-item.completed{
+background:#f0fdf4;
+border-color:#10b981;
+}
+
+.task-checkbox{
+width:20px;
+height:20px;
+border:2px solid #d1d5db;
+border-radius:4px;
+margin-right:10px;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.task-item.completed .task-checkbox{
+background:#10b981;
+border-color:#10b981;
+color:white;
+}
+
+.task-date{
+font-size:0.75em;
+color:#10b981;
+}
+
+</style>
 </head>
+
 <body>
-  <div class="wrap">
-    <div class="hero">
-      <h1>Cronograma da Operação Mercado Livre + Bling</h1>
-      <p>
-        Projeto em construção com foco em gerar renda, organizar a operação e escalar vendas
-        de forma profissional, sem bagunça de estoque, anúncios ou documentos.
-      </p>
-    </div>
 
-    <div class="status-grid">
-      <div class="status-card">
-        <h3>Status atual</h3>
-        <strong>Operação em andamento</strong>
-      </div>
-      <div class="status-card">
-        <h3>Modelo atual</h3>
-        <strong>Mercado Livre + Bling</strong>
-      </div>
-      <div class="status-card">
-        <h3>Momento</h3>
-        <strong>Estruturar e vender</strong>
-      </div>
-      <div class="status-card">
-        <h3>Próximo foco</h3>
-        <strong>Novos anúncios</strong>
-      </div>
-    </div>
+<div class="container">
 
-    <h2 class="section-title">Linha do tempo atualizada</h2>
+<h1>Cronograma Estratégico – Vendas Online</h1>
+<p class="subtitle">Focado em gerar renda com vendas online, ampliar catálogo e preparar a base para escalar com organização.</p>
 
-    <div class="timeline">
-      <div class="phase">
-        <span class="badge ok">Concluído</span>
-        <h2>Fase 1 — Início da operação no Mercado Livre</h2>
-        <ul>
-          <li>Estudo inicial do Mercado Livre.</li>
-          <li>Primeiros anúncios criados diretamente na plataforma.</li>
-          <li>Primeiras decisões de preço, kits e posicionamento.</li>
-          <li>Validação prática de como funciona a venda no marketplace.</li>
-        </ul>
-      </div>
+<div class="progress-summary">
+<div>
+<span class="progress-number" id="completed-tasks">0</span>
+Tarefas concluídas
+</div>
 
-      <div class="phase">
-        <span class="badge ok">Concluído</span>
-        <h2>Fase 2 — Mudança de rota para estrutura profissional</h2>
-        <ul>
-          <li>Percepção de que vender só direto no ML geraria bagunça com o crescimento.</li>
-          <li>Decisão de migrar a operação para um fluxo com ERP.</li>
-          <li>Adoção do Bling como base de cadastro, estoque e nota fiscal.</li>
-          <li>Pausa estratégica para reorganizar a operação antes de escalar.</li>
-        </ul>
-      </div>
+<div>
+<span class="progress-number" id="total-tasks">0</span>
+Total tarefas
+</div>
 
-      <div class="phase">
-        <span class="badge ok">Concluído</span>
-        <h2>Fase 3 — Base operacional montada</h2>
-        <ul>
-          <li>Integração Bling + Mercado Livre funcionando.</li>
-          <li>Padrão de SKU definido.</li>
-          <li>Produtos base e kits estruturados.</li>
-          <li>Estoque sincronizado corretamente.</li>
-          <li>Fluxo de emissão de NF-e validado.</li>
-          <li>Primeira venda realizada com sucesso.</li>
-        </ul>
-      </div>
+<div>
+<span class="progress-number" id="completed-phases">0</span>
+Fases completas
+</div>
 
-      <div class="phase">
-        <span class="badge ok">Concluído</span>
-        <h2>Fase 4 — Organização de arquivos e operação</h2>
-        <ul>
-          <li>Estrutura de pastas criada para Marketplace.</li>
-          <li>Script diário para criação de pastas fiscais em uso.</li>
-          <li>Separação organizada de XML, DANFE, etiquetas e materiais dos produtos.</li>
-          <li>Início da padronização operacional da empresa.</li>
-        </ul>
-      </div>
+<div class="progress-bar-container">
+<div class="progress-bar" id="progress-bar">0%</div>
+</div>
+</div>
 
-      <div class="phase">
-        <span class="badge doing">Em andamento</span>
-        <h2>Fase 5 — Geração de renda e expansão de anúncios</h2>
-        <ul>
-          <li>Criar e publicar novos produtos com mais velocidade.</li>
-          <li>Melhorar títulos, imagens e descrições com foco em conversão.</li>
-          <li>Usar kits e precificação de forma estratégica.</li>
-          <li>Construir uma operação que gere caixa de forma crescente.</li>
-        </ul>
-      </div>
+<div class="controls">
+<button class="btn btn-export" onclick="exportProgress()">Exportar progresso</button>
+<button class="btn btn-reset" onclick="resetProgress()">Resetar</button>
+</div>
 
-      <div class="phase">
-        <span class="badge next">Próxima etapa</span>
-        <h2>Fase 6 — Consolidação do sistema da empresa</h2>
-        <ul>
-          <li>Pacote Mestre de Produto.</li>
-          <li>Padrão de criação de produto novo do zero até publicar.</li>
-          <li>Manual Operacional completo da empresa.</li>
-          <li>Rotina de backup automático e digitalização de comprovantes.</li>
-        </ul>
-      </div>
-    </div>
+<div class="instructions">
+Clique na fase para ver tarefas. Clique na tarefa para marcar como concluída.
+</div>
 
-    <div class="highlight">
-      <strong>Resumo do momento:</strong><br>
-      O projeto começou com anúncios feitos diretamente no Mercado Livre, depois evoluiu para uma
-      estrutura profissional com Bling. Agora a prioridade é usar essa base para vender mais,
-      cadastrar novos produtos com rapidez e gerar renda antes de aprofundar as automações.
-    </div>
+<div class="gantt-header">
+<div class="gantt-label">Fase</div>
+<div class="gantt-weeks" id="weeks-header"></div>
+</div>
 
-    <div class="footer">
-      Atualizado em 2026 — Operação F G Distribuidora Barber
-    </div>
-  </div>
+<div id="phases-container"></div>
+
+</div>
+
+<script>
+
+var phases = [
+
+{
+id:1,
+name:"INÍCIO NO MERCADO LIVRE",
+duration:"Fase inicial",
+start:0,
+length:1,
+color:"color-blue",
+tasks:[
+"Criar conta vendedor no Mercado Livre",
+"Estudar funcionamento do marketplace",
+"Analisar concorrência",
+"Criar primeiros anúncios",
+"Publicar primeiros produtos"
+]
+},
+
+{
+id:2,
+name:"REVISÃO DA ESTRATÉGIA",
+duration:"Reorganização",
+start:1,
+length:1,
+color:"color-green",
+tasks:[
+"Perceber necessidade de ERP",
+"Escolher Bling",
+"Planejar reorganização da operação"
+]
+},
+
+{
+id:3,
+name:"IMPLANTAÇÃO DO BLING",
+duration:"Estrutura",
+start:2,
+length:2,
+color:"color-purple",
+tasks:[
+"Cadastrar produtos no Bling",
+"Criar SKUs padronizados",
+"Integrar Bling com Mercado Livre",
+"Configurar NF-e"
+]
+},
+
+{
+id:4,
+name:"PRIMEIRA VENDA OPERACIONAL",
+duration:"Validação",
+start:4,
+length:1,
+color:"color-orange",
+tasks:[
+"Receber primeira venda",
+"Emitir NF-e",
+"Gerar DANFE",
+"Imprimir etiqueta",
+"Postar pedido"
+]
+},
+
+{
+id:5,
+name:"ORGANIZAÇÃO DA OPERAÇÃO",
+duration:"Estrutura",
+start:5,
+length:2,
+color:"color-red",
+tasks:[
+"Criar estrutura de pastas",
+"Separar XML e DANFE",
+"Criar scripts de organização",
+"Documentar processos"
+]
+},
+
+{
+id:6,
+name:"EXPANSÃO DE ANÚNCIOS",
+duration:"Fase atual",
+start:7,
+length:2,
+color:"color-indigo",
+tasks:[
+"Criar novos anúncios",
+"Melhorar SEO",
+"Criar imagens com IA",
+"Criar kits de produtos"
+]
+},
+
+{
+id:7,
+name:"ESCALA DA OPERAÇÃO",
+duration:"Próximos passos",
+start:9,
+length:3,
+color:"color-teal",
+tasks:[
+"Criar Pacote Mestre de Produto",
+"Criar padrão de cadastro",
+"Manual operacional da empresa",
+"Backup automático"
+]
+}
+
+];
+
+var completedTasks={
+"1-0":"01/03/2026",
+"1-1":"01/03/2026",
+"1-2":"01/03/2026",
+"1-3":"01/03/2026",
+"1-4":"01/03/2026",
+
+"2-0":"03/03/2026",
+"2-1":"03/03/2026",
+"2-2":"03/03/2026",
+
+"3-0":"05/03/2026",
+"3-1":"05/03/2026",
+"3-2":"06/03/2026",
+"3-3":"06/03/2026",
+
+"4-0":"07/03/2026",
+"4-1":"07/03/2026",
+"4-2":"07/03/2026",
+"4-3":"07/03/2026",
+"4-4":"07/03/2026",
+
+"5-0":"08/03/2026",
+"5-1":"08/03/2026",
+"5-2":"08/03/2026",
+"5-3":"08/03/2026"
+};
+
+function loadProgress(){
+var saved=localStorage.getItem("cronogramaML");
+if(saved){completedTasks=JSON.parse(saved);}
+}
+
+function saveProgress(){
+localStorage.setItem("cronogramaML",JSON.stringify(completedTasks));
+updateProgress();
+}
+
+function toggleTask(p,t){
+
+var k=p+"-"+t;
+
+if(completedTasks[k]) delete completedTasks[k];
+else completedTasks[k]=new Date().toLocaleDateString("pt-BR");
+
+saveProgress();
+renderPhases();
+
+}
+
+function updateProgress(){
+
+var total=0;
+var done=0;
+var phasesDone=0;
+
+phases.forEach(function(ph){
+
+var c=0;
+
+ph.tasks.forEach(function(t,i){
+
+total++;
+var k=ph.id+"-"+i;
+
+if(completedTasks[k]){
+done++;
+c++;
+}
+
+});
+
+if(c===ph.tasks.length) phasesDone++;
+
+});
+
+var pct=Math.round(done/total*100);
+
+document.getElementById("completed-tasks").textContent=done;
+document.getElementById("total-tasks").textContent=total;
+document.getElementById("completed-phases").textContent=phasesDone;
+
+var bar=document.getElementById("progress-bar");
+bar.style.width=pct+"%";
+bar.textContent=pct+"%";
+
+}
+
+function togglePhase(id){
+
+var el=document.getElementById("tasks-"+id);
+
+if(el.classList.contains("active"))
+el.classList.remove("active");
+else
+el.classList.add("active");
+
+}
+
+function renderPhases(){
+
+var c=document.getElementById("phases-container");
+c.innerHTML="";
+
+phases.forEach(function(ph){
+
+var d=document.createElement("div");
+d.className="phase";
+
+var done=0;
+
+ph.tasks.forEach(function(t,i){
+if(completedTasks[ph.id+"-"+i]) done++;
+});
+
+if(done===ph.tasks.length) d.classList.add("completed");
+
+var left=(ph.start/12)*100;
+var width=(ph.length/12)*100;
+
+var grid="";
+for(var i=0;i<12;i++) grid+="<div class='grid-cell'></div>";
+
+var tasks="";
+
+ph.tasks.forEach(function(t,i){
+
+var k=ph.id+"-"+i;
+var doneClass=completedTasks[k]?"completed":"";
+var date=completedTasks[k]?"<div class='task-date'>✔ "+completedTasks[k]+"</div>":"";
+
+tasks+="<div class='task-item "+doneClass+"' onclick='toggleTask("+ph.id+","+i+")'>";
+tasks+="<div class='task-checkbox'></div>";
+tasks+="<div>"+t+date+"</div>";
+tasks+="</div>";
+
+});
+
+d.innerHTML=
+"<div class='phase-header' onclick='togglePhase("+ph.id+")'>"+
+"<div class='phase-info'><div class='phase-name'>"+ph.name+"</div>"+ph.duration+"</div>"+
+"<div class='phase-chart'>"+
+"<div class='phase-grid'>"+grid+"</div>"+
+"<div class='phase-bar "+ph.color+"' style='left:"+left+"%;width:"+width+"%'>"+ph.duration+"</div>"+
+"</div></div>"+
+"<div class='phase-tasks' id='tasks-"+ph.id+"'>"+tasks+"</div>";
+
+c.appendChild(d);
+
+});
+
+updateProgress();
+
+}
+
+document.addEventListener("DOMContentLoaded",function(){
+
+var w=document.getElementById("weeks-header");
+
+for(var i=1;i<=12;i++){
+var e=document.createElement("div");
+e.className="week";
+e.textContent="S"+i;
+w.appendChild(e);
+}
+
+loadProgress();
+renderPhases();
+
+});
+
+function resetProgress(){
+
+if(confirm("Resetar progresso?")){
+completedTasks={};
+saveProgress();
+renderPhases();
+}
+
+}
+
+function exportProgress(){
+
+var r="RELATÓRIO CRONOGRAMA\n\n";
+
+phases.forEach(function(ph){
+
+r+=ph.name+"\n";
+
+ph.tasks.forEach(function(t,i){
+
+var k=ph.id+"-"+i;
+
+r+=(completedTasks[k]?"[OK] ":"[ ] ")+t+"\n";
+
+});
+
+r+="\n";
+
+});
+
+var blob=new Blob([r],{type:"text/plain"});
+var url=URL.createObjectURL(blob);
+var a=document.createElement("a");
+a.href=url;
+a.download="progresso.txt";
+a.click();
+
+}
+
+</script>
+
 </body>
 </html>
