@@ -1,818 +1,258 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cronograma de Implementação no ML - Gilnei</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f3f4f6;
-            padding: 20px;
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-        }
-
-        h1 {
-            color: #1f2937;
-            font-size: 2em;
-            margin-bottom: 10px;
-        }
-
-        .subtitle {
-            color: #6b7280;
-            margin-bottom: 20px;
-            font-size: 1.1em;
-        }
-
-        .progress-summary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .progress-item {
-            text-align: center;
-        }
-
-        .progress-number {
-            font-size: 2.5em;
-            font-weight: bold;
-            display: block;
-        }
-
-        .progress-label {
-            font-size: 0.9em;
-            opacity: 0.9;
-        }
-
-        .progress-bar-container {
-            width: 100%;
-            height: 30px;
-            background-color: rgba(255,255,255,0.3);
-            border-radius: 15px;
-            overflow: hidden;
-            margin-top: 10px;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background-color: #10b981;
-            transition: width 0.5s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 0.9em;
-        }
-
-        .controls {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-            font-size: 0.9em;
-        }
-
-        .btn-reset {
-            background-color: #ef4444;
-            color: white;
-        }
-
-        .btn-reset:hover {
-            background-color: #dc2626;
-        }
-
-        .btn-export {
-            background-color: #3b82f6;
-            color: white;
-        }
-
-        .btn-export:hover {
-            background-color: #2563eb;
-        }
-
-        .instructions {
-            background-color: #dbeafe;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-        }
-
-        .instructions h3 {
-            color: #1e40af;
-            margin-bottom: 10px;
-        }
-
-        .instructions p {
-            color: #1e3a8a;
-            font-size: 0.95em;
-        }
-
-        .gantt-header {
-            display: flex;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #e5e7eb;
-            padding-bottom: 10px;
-        }
-
-        .gantt-label {
-            width: 300px;
-            font-weight: bold;
-            color: #374151;
-            font-size: 1.1em;
-        }
-
-        .gantt-weeks {
-            flex: 1;
-            display: flex;
-        }
-
-        .week {
-            flex: 1;
-            text-align: center;
-            font-size: 0.85em;
-            color: #6b7280;
-            font-weight: 600;
-            border-left: 1px solid #e5e7eb;
-            padding: 5px 0;
-        }
-
-        .phase {
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            background-color: white;
-            transition: all 0.3s ease;
-        }
-
-        .phase.completed {
-            border-color: #10b981;
-            background-color: #f0fdf4;
-        }
-
-        .phase:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .phase-header {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .phase-info {
-            width: 300px;
-            padding-right: 20px;
-        }
-
-        .phase-name {
-            font-weight: bold;
-            color: #1f2937;
-            font-size: 0.95em;
-            margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .phase-check {
-            font-size: 1.3em;
-        }
-
-        .phase-duration {
-            font-size: 0.85em;
-            color: #6b7280;
-        }
-
-        .phase-completion {
-            font-size: 0.75em;
-            color: #10b981;
-            font-weight: 600;
-            margin-top: 3px;
-        }
-
-        .phase-chart {
-            flex: 1;
-            position: relative;
-            height: 40px;
-        }
-
-        .phase-grid {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            display: flex;
-        }
-
-        .grid-cell {
-            flex: 1;
-            border-left: 1px solid #e5e7eb;
-        }
-
-        .phase-bar {
-            position: absolute;
-            height: 32px;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 0.8em;
-            font-weight: 600;
-            opacity: 0.85;
-            transition: opacity 0.3s ease;
-        }
-
-        .phase-bar:hover {
-            opacity: 1;
-        }
-
-        .color-blue { background-color: #3b82f6; }
-        .color-green { background-color: #10b981; }
-        .color-purple { background-color: #8b5cf6; }
-        .color-orange { background-color: #f97316; }
-        .color-red { background-color: #ef4444; }
-        .color-indigo { background-color: #6366f1; }
-        .color-teal { background-color: #14b8a6; }
-
-        .phase-tasks {
-            padding: 20px;
-            background-color: #f9fafb;
-            border-top: 1px solid #e5e7eb;
-            display: none;
-        }
-
-        .phase-tasks.active {
-            display: block;
-        }
-
-        .phase-tasks h4 {
-            color: #374151;
-            margin-bottom: 15px;
-            font-size: 0.95em;
-        }
-
-        .task-list {
-            list-style: none;
-        }
-
-        .task-item {
-            display: flex;
-            align-items: flex-start;
-            padding: 12px;
-            margin-bottom: 8px;
-            background-color: white;
-            border-radius: 6px;
-            border: 1px solid #e5e7eb;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
-        .task-item:hover {
-            border-color: #3b82f6;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        .task-item.completed {
-            background-color: #f0fdf4;
-            border-color: #10b981;
-        }
-
-        .task-checkbox {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #d1d5db;
-            border-radius: 4px;
-            margin-right: 12px;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .task-item.completed .task-checkbox {
-            background-color: #10b981;
-            border-color: #10b981;
-        }
-
-        .task-checkbox::after {
-            content: '✓';
-            color: white;
-            font-weight: bold;
-            display: none;
-        }
-
-        .task-item.completed .task-checkbox::after {
-            display: block;
-        }
-
-        .task-content {
-            flex: 1;
-        }
-
-        .task-text {
-            color: #4b5563;
-            font-size: 0.9em;
-            line-height: 1.5;
-        }
-
-        .task-item.completed .task-text {
-            color: #6b7280;
-            text-decoration: line-through;
-        }
-
-        .task-date {
-            font-size: 0.75em;
-            color: #10b981;
-            margin-top: 4px;
-            font-weight: 600;
-        }
-
-        .milestones {
-            margin-top: 40px;
-            padding: 20px;
-            background-color: #fef3c7;
-            border-left: 4px solid #f59e0b;
-            border-radius: 8px;
-        }
-
-        .milestones h3 {
-            color: #92400e;
-            margin-bottom: 15px;
-        }
-
-        .milestone-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 15px;
-        }
-
-        .milestone-item {
-            font-size: 0.9em;
-        }
-
-        .milestone-week {
-            font-weight: bold;
-            color: #78350f;
-        }
-
-        .milestone-text {
-            color: #92400e;
-        }
-
-        .tips {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: #d1fae5;
-            border-radius: 8px;
-        }
-
-        .tips h3 {
-            color: #065f46;
-            margin-bottom: 15px;
-        }
-
-        .tips ul {
-            list-style: none;
-        }
-
-        .tips li {
-            color: #047857;
-            font-size: 0.9em;
-            margin-bottom: 8px;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 15px;
-            }
-            
-            .gantt-label,
-            .phase-info {
-                width: 200px;
-            }
-            
-            h1 {
-                font-size: 1.5em;
-            }
-            
-            .week {
-                font-size: 0.7em;
-            }
-
-            .progress-summary {
-                flex-direction: column;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cronograma Operação Mercado Livre + Bling</title>
+  <style>
+    :root{
+      --bg:#f4f7fb;
+      --card:#ffffff;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --ok:#16a34a;
+      --doing:#d97706;
+      --next:#2563eb;
+      --border:#e5e7eb;
+      --shadow:0 10px 25px rgba(0,0,0,0.06);
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family:Arial, Helvetica, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+
+    .wrap{
+      max-width:1000px;
+      margin:0 auto;
+      padding:32px 20px 48px;
+    }
+
+    .hero{
+      background:linear-gradient(135deg, #0f172a, #1e3a8a);
+      color:#fff;
+      border-radius:18px;
+      padding:28px;
+      box-shadow:var(--shadow);
+      margin-bottom:24px;
+    }
+
+    .hero h1{
+      margin:0 0 10px;
+      font-size:32px;
+    }
+
+    .hero p{
+      margin:0;
+      line-height:1.6;
+      color:#dbeafe;
+    }
+
+    .status-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+      gap:14px;
+      margin:24px 0;
+    }
+
+    .status-card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:16px;
+      box-shadow:var(--shadow);
+    }
+
+    .status-card h3{
+      margin:0 0 8px;
+      font-size:16px;
+      color:var(--muted);
+    }
+
+    .status-card strong{
+      font-size:20px;
+    }
+
+    .section-title{
+      margin:30px 0 14px;
+      font-size:24px;
+    }
+
+    .timeline{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+
+    .phase{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:20px;
+      box-shadow:var(--shadow);
+    }
+
+    .phase h2{
+      margin:0 0 12px;
+      font-size:20px;
+    }
+
+    .badge{
+      display:inline-block;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:bold;
+      margin-bottom:12px;
+    }
+
+    .ok{background:#dcfce7;color:#166534;}
+    .doing{background:#fef3c7;color:#92400e;}
+    .next{background:#dbeafe;color:#1d4ed8;}
+
+    ul{
+      margin:0;
+      padding-left:18px;
+      line-height:1.7;
+    }
+
+    .footer{
+      margin-top:32px;
+      text-align:center;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .highlight{
+      background:#eff6ff;
+      border-left:4px solid #2563eb;
+      padding:14px 16px;
+      border-radius:10px;
+      margin-top:18px;
+      line-height:1.6;
+    }
+
+    @media (max-width:640px){
+      .hero h1{font-size:26px}
+      .section-title{font-size:22px}
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Cronograma de Implementação - Mercado Livre</h1>
-        <p class="subtitle">Plano de 12 semanas para iniciar vendas de produtos de barbearia</p>
-
-        <div class="progress-summary">
-            <div class="progress-item">
-                <span class="progress-number" id="completed-tasks">0</span>
-                <span class="progress-label">Tarefas Concluídas</span>
-            </div>
-            <div class="progress-item">
-                <span class="progress-number" id="total-tasks">35</span>
-                <span class="progress-label">Total de Tarefas</span>
-            </div>
-            <div class="progress-item">
-                <span class="progress-number" id="completed-phases">0</span>
-                <span class="progress-label">Fases Completas</span>
-            </div>
-            <div class="progress-bar-container" style="width: 100%; max-width: 400px;">
-                <div class="progress-bar" id="progress-bar">0%</div>
-            </div>
-        </div>
-
-        <div class="controls">
-            <button class="btn btn-export" onclick="exportProgress()">📊 Exportar Progresso</button>
-            <button class="btn btn-reset" onclick="resetProgress()">🔄 Resetar Tudo</button>
-        </div>
-
-        <div class="instructions">
-            <h3>📋 Instruções:</h3>
-            <p>Clique em cada fase para ver as tarefas. Clique nas tarefas para marcá-las como concluídas. Seu progresso é salvo automaticamente!</p>
-        </div>
-
-        <div class="gantt-header">
-            <div class="gantt-label">Fase</div>
-            <div class="gantt-weeks" id="weeks-header"></div>
-        </div>
-
-        <div id="phases-container"></div>
-
-        <div class="milestones">
-            <h3>🎯 Marcos Importantes:</h3>
-            <div class="milestone-grid">
-                <div class="milestone-item">
-                    <span class="milestone-week">Semana 4:</span>
-                    <span class="milestone-text"> Primeira venda realizada</span>
-                </div>
-                <div class="milestone-item">
-                    <span class="milestone-week">Semana 6:</span>
-                    <span class="milestone-text"> 20+ produtos cadastrados</span>
-                </div>
-                <div class="milestone-item">
-                    <span class="milestone-week">Semana 8:</span>
-                    <span class="milestone-text"> Reputação estabelecida</span>
-                </div>
-                <div class="milestone-item">
-                    <span class="milestone-week">Semana 12:</span>
-                    <span class="milestone-text"> Operação consolidada</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="tips">
-            <h3>💡 Dicas para Sucesso:</h3>
-            <ul>
-                <li>• Comece com poucos produtos e expanda gradualmente</li>
-                <li>• Invista tempo em fotos de qualidade - é o diferencial</li>
-                <li>• Responda perguntas rapidamente para aumentar conversão</li>
-                <li>• Use Mercado Envios para ganhar credibilidade inicial</li>
-                <li>• Monitore a concorrência semanalmente</li>
-            </ul>
-        </div>
+  <div class="wrap">
+    <div class="hero">
+      <h1>Cronograma da Operação Mercado Livre + Bling</h1>
+      <p>
+        Projeto em construção com foco em gerar renda, organizar a operação e escalar vendas
+        de forma profissional, sem bagunça de estoque, anúncios ou documentos.
+      </p>
     </div>
 
-    <script>
-        var phases = [
-            {
-                id: 1,
-                name: "PREPARAÇÃO INICIAL",
-                duration: "Semana 1",
-                start: 0,
-                length: 1,
-                color: "color-blue",
-                tasks: [
-                    "Criar conta vendedor no Mercado Livre",
-                    "Vincular conta bancária e configurar recebimentos",
-                    "Estudar políticas e regras do Mercado Livre",
-                    "Analisar concorrência (preços, descrições, fotos)",
-                    "Definir estratégia de precificação"
-                ]
-            },
-            {
-                id: 2,
-                name: "ESTRUTURAÇÃO DE CADASTROS",
-                duration: "Semanas 2-3",
-                start: 1,
-                length: 2,
-                color: "color-green",
-                tasks: [
-                    "Fotografar todos os produtos (fundo branco, múltiplos ângulos)",
-                    "Criar descrições detalhadas e otimizadas para SEO",
-                    "Definir códigos SKU para controle de estoque",
-                    "Preparar tabela de medidas e especificações técnicas",
-                    "Criar templates de descrição padrão"
-                ]
-            },
-            {
-                id: 3,
-                name: "CADASTRO DE PRODUTOS",
-                duration: "Semana 3-4",
-                start: 2.5,
-                length: 1.5,
-                color: "color-purple",
-                tasks: [
-                    "Cadastrar primeiros 10-15 produtos principais",
-                    "Configurar variações (tamanhos, fragrâncias, etc)",
-                    "Definir estoque disponível para cada produto",
-                    "Configurar frete (Mercado Envios)",
-                    "Estabelecer preços e promoções iniciais"
-                ]
-            },
-            {
-                id: 4,
-                name: "LOGÍSTICA E OPERAÇÃO",
-                duration: "Semana 4",
-                start: 3.5,
-                length: 1,
-                color: "color-orange",
-                tasks: [
-                    "Organizar área de separação e embalagem",
-                    "Comprar materiais de embalagem (caixas, plástico bolha, fita)",
-                    "Criar processo de embalagem padronizado",
-                    "Testar envio com Mercado Envios",
-                    "Configurar integrações de estoque (se aplicável)"
-                ]
-            },
-            {
-                id: 5,
-                name: "LANÇAMENTO E OTIMIZAÇÃO",
-                duration: "Semana 5-6",
-                start: 4,
-                length: 2,
-                color: "color-red",
-                tasks: [
-                    "Ativar todos os anúncios simultaneamente",
-                    "Configurar anúncios patrocinados nos produtos principais",
-                    "Monitorar primeiras vendas e feedback",
-                    "Ajustar preços conforme performance",
-                    "Responder todas as perguntas em até 2 horas"
-                ]
-            },
-            {
-                id: 6,
-                name: "EXPANSÃO DO CATÁLOGO",
-                duration: "Semanas 6-8",
-                start: 5.5,
-                length: 2.5,
-                color: "color-indigo",
-                tasks: [
-                    "Cadastrar produtos complementares",
-                    "Criar kits e combos promocionais",
-                    "Adicionar produtos de maior margem",
-                    "Expandar variações dos produtos mais vendidos",
-                    "Testar novos nichos dentro de barbearia"
-                ]
-            },
-            {
-                id: 7,
-                name: "CONSOLIDAÇÃO E CRESCIMENTO",
-                duration: "Semanas 8-12",
-                start: 7.5,
-                length: 4.5,
-                color: "color-teal",
-                tasks: [
-                    "Alcançar reputação verde/laranja",
-                    "Implementar melhorias baseadas em feedback",
-                    "Avaliar possibilidade de Mercado Livre Full",
-                    "Expandir investimento em anúncios patrocinados",
-                    "Desenvolver relacionamento com clientes recorrentes"
-                ]
-            }
-        ];
+    <div class="status-grid">
+      <div class="status-card">
+        <h3>Status atual</h3>
+        <strong>Operação em andamento</strong>
+      </div>
+      <div class="status-card">
+        <h3>Modelo atual</h3>
+        <strong>Mercado Livre + Bling</strong>
+      </div>
+      <div class="status-card">
+        <h3>Momento</h3>
+        <strong>Estruturar e vender</strong>
+      </div>
+      <div class="status-card">
+        <h3>Próximo foco</h3>
+        <strong>Novos anúncios</strong>
+      </div>
+    </div>
 
-        var completedTasks = {};
+    <h2 class="section-title">Linha do tempo atualizada</h2>
 
-        function loadProgress() {
-            var saved = localStorage.getItem('cronogramaML');
-            if (saved) {
-                completedTasks = JSON.parse(saved);
-            }
-        }
+    <div class="timeline">
+      <div class="phase">
+        <span class="badge ok">Concluído</span>
+        <h2>Fase 1 — Início da operação no Mercado Livre</h2>
+        <ul>
+          <li>Estudo inicial do Mercado Livre.</li>
+          <li>Primeiros anúncios criados diretamente na plataforma.</li>
+          <li>Primeiras decisões de preço, kits e posicionamento.</li>
+          <li>Validação prática de como funciona a venda no marketplace.</li>
+        </ul>
+      </div>
 
-        function saveProgress() {
-            localStorage.setItem('cronogramaML', JSON.stringify(completedTasks));
-            updateProgress();
-        }
+      <div class="phase">
+        <span class="badge ok">Concluído</span>
+        <h2>Fase 2 — Mudança de rota para estrutura profissional</h2>
+        <ul>
+          <li>Percepção de que vender só direto no ML geraria bagunça com o crescimento.</li>
+          <li>Decisão de migrar a operação para um fluxo com ERP.</li>
+          <li>Adoção do Bling como base de cadastro, estoque e nota fiscal.</li>
+          <li>Pausa estratégica para reorganizar a operação antes de escalar.</li>
+        </ul>
+      </div>
 
-        function toggleTask(phaseId, taskIndex) {
-            var key = phaseId + '-' + taskIndex;
-            if (completedTasks[key]) {
-                delete completedTasks[key];
-            } else {
-                completedTasks[key] = new Date().toLocaleDateString('pt-BR');
-            }
-            saveProgress();
-            renderPhases();
-        }
+      <div class="phase">
+        <span class="badge ok">Concluído</span>
+        <h2>Fase 3 — Base operacional montada</h2>
+        <ul>
+          <li>Integração Bling + Mercado Livre funcionando.</li>
+          <li>Padrão de SKU definido.</li>
+          <li>Produtos base e kits estruturados.</li>
+          <li>Estoque sincronizado corretamente.</li>
+          <li>Fluxo de emissão de NF-e validado.</li>
+          <li>Primeira venda realizada com sucesso.</li>
+        </ul>
+      </div>
 
-        function updateProgress() {
-            var total = 0;
-            var completed = 0;
-            var completedPhases = 0;
+      <div class="phase">
+        <span class="badge ok">Concluído</span>
+        <h2>Fase 4 — Organização de arquivos e operação</h2>
+        <ul>
+          <li>Estrutura de pastas criada para Marketplace.</li>
+          <li>Script diário para criação de pastas fiscais em uso.</li>
+          <li>Separação organizada de XML, DANFE, etiquetas e materiais dos produtos.</li>
+          <li>Início da padronização operacional da empresa.</li>
+        </ul>
+      </div>
 
-            phases.forEach(function(phase) {
-                var phaseCompleted = 0;
-                phase.tasks.forEach(function(task, idx) {
-                    total++;
-                    var key = phase.id + '-' + idx;
-                    if (completedTasks[key]) {
-                        completed++;
-                        phaseCompleted++;
-                    }
-                });
-                if (phaseCompleted === phase.tasks.length) {
-                    completedPhases++;
-                }
-            });
+      <div class="phase">
+        <span class="badge doing">Em andamento</span>
+        <h2>Fase 5 — Geração de renda e expansão de anúncios</h2>
+        <ul>
+          <li>Criar e publicar novos produtos com mais velocidade.</li>
+          <li>Melhorar títulos, imagens e descrições com foco em conversão.</li>
+          <li>Usar kits e precificação de forma estratégica.</li>
+          <li>Construir uma operação que gere caixa de forma crescente.</li>
+        </ul>
+      </div>
 
-            var percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+      <div class="phase">
+        <span class="badge next">Próxima etapa</span>
+        <h2>Fase 6 — Consolidação do sistema da empresa</h2>
+        <ul>
+          <li>Pacote Mestre de Produto.</li>
+          <li>Padrão de criação de produto novo do zero até publicar.</li>
+          <li>Manual Operacional completo da empresa.</li>
+          <li>Rotina de backup automático e digitalização de comprovantes.</li>
+        </ul>
+      </div>
+    </div>
 
-            document.getElementById('completed-tasks').textContent = completed;
-            document.getElementById('total-tasks').textContent = total;
-            document.getElementById('completed-phases').textContent = completedPhases;
-            document.getElementById('progress-bar').style.width = percentage + '%';
-            document.getElementById('progress-bar').textContent = percentage + '%';
-        }
+    <div class="highlight">
+      <strong>Resumo do momento:</strong><br>
+      O projeto começou com anúncios feitos diretamente no Mercado Livre, depois evoluiu para uma
+      estrutura profissional com Bling. Agora a prioridade é usar essa base para vender mais,
+      cadastrar novos produtos com rapidez e gerar renda antes de aprofundar as automações.
+    </div>
 
-        function togglePhase(phaseId) {
-            var tasksDiv = document.getElementById('tasks-' + phaseId);
-            if (tasksDiv.classList.contains('active')) {
-                tasksDiv.classList.remove('active');
-            } else {
-                tasksDiv.classList.add('active');
-            }
-        }
-
-        function exportProgress() {
-            var report = 'CRONOGRAMA MERCADO LIVRE - RELATÓRIO DE PROGRESSO\n';
-            report += 'Data: ' + new Date().toLocaleDateString('pt-BR') + '\n\n';
-
-            phases.forEach(function(phase) {
-                var phaseCompleted = 0;
-                phase.tasks.forEach(function(task, idx) {
-                    var key = phase.id + '-' + idx;
-                    if (completedTasks[key]) {
-                        phaseCompleted++;
-                    }
-                });
-                
-                report += phase.name + ' (' + phase.duration + ')\n';
-                report += 'Progresso: ' + phaseCompleted + '/' + phase.tasks.length + ' tarefas\n\n';
-                
-                phase.tasks.forEach(function(task, idx) {
-                    var key = phase.id + '-' + idx;
-                    var status = completedTasks[key] ? '[✓] Concluída em ' + completedTasks[key] : '[ ] Pendente';
-                    report += '  ' + status + ' - ' + task + '\n';
-                });
-                report += '\n';
-            });
-
-            var blob = new Blob([report], { type: 'text/plain' });
-            var url = window.URL.createObjectURL(blob);
-            var a = document.createElement('a');
-            a.href = url;
-            a.download = 'cronograma-ml-progresso.txt';
-            a.click();
-        }
-
-        function resetProgress() {
-            if (confirm('Tem certeza que deseja resetar todo o progresso? Esta ação não pode ser desfeita.')) {
-                completedTasks = {};
-                saveProgress();
-                renderPhases();
-            }
-        }
-
-        function renderPhases() {
-            var phasesContainer = document.getElementById('phases-container');
-            phasesContainer.innerHTML = '';
-
-            phases.forEach(function(phase) {
-                var phaseDiv = document.createElement('div');
-                phaseDiv.className = 'phase';
-                
-                var phaseCompleted = 0;
-                phase.tasks.forEach(function(task, idx) {
-                    var key = phase.id + '-' + idx;
-                    if (completedTasks[key]) {
-                        phaseCompleted++;
-                    }
-                });
-
-                if (phaseCompleted === phase.tasks.length) {
-                    phaseDiv.classList.add('completed');
-                }
-
-                var leftPosition = (phase.start / 12) * 100;
-                var width = (phase.length / 12) * 100;
-                
-                var gridCells = '';
-                for (var i = 0; i < 12; i++) {
-                    gridCells += '<div class="grid-cell"></div>';
-                }
-
-                var checkIcon = phaseCompleted === phase.tasks.length ? '✓' : '';
-                var completionText = phaseCompleted > 0 ? '<div class="phase-completion">' + phaseCompleted + '/' + phase.tasks.length + ' concluídas</div>' : '';
-                
-                var tasksList = '';
-                phase.tasks.forEach(function(task, idx) {
-                    var key = phase.id + '-' + idx;
-                    var isCompleted = completedTasks[key] ? 'completed' : '';
-                    var dateText = completedTasks[key] ? '<div class="task-date">✓ Concluída em ' + completedTasks[key] + '</div>' : '';
-                    
-                    tasksList += '<li class="task-item ' + isCompleted + '" onclick="toggleTask(' + phase.id + ', ' + idx + ')">';
-                    tasksList += '<div class="task-checkbox"></div>';
-                    tasksList += '<div class="task-content">';
-                    tasksList += '<div class="task-text">' + task + '</div>';
-                    tasksList += dateText;
-                    tasksList += '</div>';
-                    tasksList += '</li>';
-                });
-                
-                var phaseHTML = '';
-                phaseHTML += '<div class="phase-header" onclick="togglePhase(' + phase.id + ')">';
-                phaseHTML += '<div class="phase-info">';
-                phaseHTML += '<div class="phase-name"><span class="phase-check">' + checkIcon + '</span>' + phase.name + '</div>';
-                phaseHTML += '<div class="phase-duration">' + phase.duration + '</div>';
-                phaseHTML += completionText;
-                phaseHTML += '</div>';
-                phaseHTML += '<div class="phase-chart">';
-                phaseHTML += '<div class="phase-grid">' + gridCells + '</div>';
-                phaseHTML += '<div class="phase-bar ' + phase.color + '" style="left: ' + leftPosition + '%; width: ' + width + '%;">';
-                phaseHTML += phase.duration;
-                phaseHTML += '</div>';
-                phaseHTML += '</div>';
-                phaseHTML += '</div>';
-                phaseHTML += '<div class="phase-tasks" id="tasks-' + phase.id + '">';
-                phaseHTML += '<h4>Tarefas:</h4>';
-                phaseHTML += '<ul class="task-list">' + tasksList + '</ul>';
-                phaseHTML += '</div>';
-                
-                phaseDiv.innerHTML = phaseHTML;
-                phasesContainer.appendChild(phaseDiv);
-            });
-
-            updateProgress();
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            var weeksHeader = document.getElementById('weeks-header');
-            for (var i = 1; i <= 12; i++) {
-                var week = document.createElement('div');
-                week.className = 'week';
-                week.textContent = 'S' + i;
-                weeksHeader.appendChild(week);
-            }
-
-            loadProgress();
-            renderPhases();
-        });
-    </script>
+    <div class="footer">
+      Atualizado em 2026 — Operação F G Distribuidora Barber
+    </div>
+  </div>
 </body>
 </html>
